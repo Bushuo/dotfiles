@@ -1,7 +1,8 @@
 # Managed by the dotfiles repo.
 
 font-family = SauceCodePro Nerd Font Mono
-font-size = 13.5
+font-size = 14
+font-thicken = true
 
 background = #181A1F
 foreground = #DADDE5

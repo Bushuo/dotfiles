@@ -7,14 +7,25 @@ if [[ "$(uname)" != "Darwin" ]]; then
   exit 0
 fi
 
-DOTFILES_NVIM="$(cd "$(dirname "$0")" && pwd)/nvim"
-TARGET="$HOME/.config/nvim"
+DOTFILES_ROOT="$(cd "$(dirname "$0")" && pwd)"
+EXIT_CODE=0
 
-if [[ -e "$TARGET" || -L "$TARGET" ]]; then
-  echo "$TARGET already exists, skipping. Remove it first if you want to re-link."
-  exit 1
-fi
+link_config() {
+  local source="$1"
+  local target="$2"
 
-mkdir -p "$HOME/.config"
-ln -s "$DOTFILES_NVIM" "$TARGET"
-echo "Linked $DOTFILES_NVIM -> $TARGET"
+  if [[ -e "$target" || -L "$target" ]]; then
+    echo "$target already exists, skipping. Remove it first if you want to re-link."
+    EXIT_CODE=1
+    return
+  fi
+
+  mkdir -p "$(dirname "$target")"
+  ln -s "$source" "$target"
+  echo "Linked $source -> $target"
+}
+
+link_config "$DOTFILES_ROOT/nvim" "$HOME/.config/nvim"
+link_config "$DOTFILES_ROOT/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+
+exit "$EXIT_CODE"

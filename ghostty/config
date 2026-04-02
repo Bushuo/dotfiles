@@ -1,52 +1,37 @@
-# This is the configuration file for Ghostty.
-#
-# This template file has been automatically created at the following
-# path since Ghostty couldn't find any existing config files on your system:
-#
-#   /Users/paulb/Library/Application Support/com.mitchellh.ghostty/config
-#
-# The template does not set any default options, since Ghostty ships
-# with sensible defaults for all options. Users should only need to set
-# options that they want to change from the default.
-#
-# Run `ghostty +show-config --default --docs` to view a list of
-# all available config options and their default values.
-#
-# Additionally, each config option is also explained in detail
-# on Ghostty's website, at https://ghostty.org/docs/config.
-#
-# Ghostty can reload the configuration while running by using the menu
-# options or the bound key (default: Command + Shift + comma on macOS and
-# Control + Shift + comma on other platforms). Not all config options can be
-# reloaded while running; some only apply to new windows and others may require
-# a full restart to take effect.
+# Managed by the dotfiles repo.
 
-# Config syntax crash course
-# ==========================
-# # The config file consists of simple key-value pairs,
-# # separated by equals signs.
-# font-family = Iosevka
-# window-padding-x = 2
-#
-# # Spacing around the equals sign does not matter.
-# # All of these are identical:
-# key=value
-# key= value
-# key =value
-# key = value
-#
-# # Any line beginning with a # is a comment. It's not possible to put
-# # a comment after a config option, since it would be interpreted as a
-# # part of the value. For example, this will have a value of "#123abc":
-# background = #123abc
-#
-# # Empty values are used to reset config keys to default.
-# key =
-#
-# # Some config options have unique syntaxes for their value,
-# # which is explained in the docs for that config option.
-# # Just for example:
-# resize-overlay-duration = 4s 200ms
 font-family = SauceCodePro Nerd Font Mono
+font-size = 13.5
+
+background = #181A1F
+foreground = #DADDE5
+selection-background = #293555
+selection-foreground = #DADDE5
+cursor-color = #DADDE5
+cursor-text = #181A1F
+
+palette = 0=#181A1F
+palette = 1=#CC4B53
+palette = 2=#82D99F
+palette = 3=#DED47E
+palette = 4=#80BBFF
+palette = 5=#B38CFF
+palette = 6=#81CFE0
+palette = 7=#DADDE5
+palette = 8=#9599A6
+palette = 9=#F2858C
+palette = 10=#00A56E
+palette = 11=#EB9B61
+palette = 12=#387BFF
+palette = 13=#F48CCA
+palette = 14=#81CFE0
+palette = 15=#FFFFFF
+
+window-padding-x = 10
+window-padding-y = 8
+window-theme = dark
+macos-titlebar-style = transparent
+copy-on-select = true
+shell-integration = detect
 
 keybind = global:cmd+backquote=toggle_quick_terminal

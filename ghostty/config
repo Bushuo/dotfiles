@@ -32,6 +32,7 @@ window-padding-x = 10
 window-padding-y = 8
 window-theme = dark
 macos-titlebar-style = transparent
+command = /opt/homebrew/bin/fish
 copy-on-select = true
 shell-integration = detect
 

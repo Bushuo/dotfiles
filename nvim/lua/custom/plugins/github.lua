@@ -3,7 +3,7 @@
 return {
   {
     'pwntester/octo.nvim',
-    cmd = { 'Octo' },
+    cmd = 'Octo',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
@@ -19,6 +19,13 @@ return {
       { '<leader>pl', '<cmd>Octo pr list<CR>', desc = '[P]ull Request [L]ist' },
       { '<leader>pr', '<cmd>Octo review<CR>', desc = '[P]ull Request [R]eview' },
     },
+    config = function(_, opts)
+      opts.ssh_aliases = {
+        ['workgit'] = 'github.com',
+        ['homegit'] = 'github.com',
+      }
+      require('octo').setup(opts)
+    end,
   },
   {
     'NeogitOrg/neogit',
@@ -35,9 +42,7 @@ return {
     keys = {
       {
         '<leader>gs',
-        function()
-          require('neogit').open()
-        end,
+        function() require('neogit').open() end,
         desc = '[G]it [S]tatus',
       },
     },
@@ -72,9 +77,7 @@ return {
       local previous_on_attach = opts.on_attach
 
       opts.on_attach = function(bufnr)
-        if previous_on_attach then
-          previous_on_attach(bufnr)
-        end
+        if previous_on_attach then previous_on_attach(bufnr) end
 
         local gitsigns = require 'gitsigns'
 
@@ -100,13 +103,9 @@ return {
           end
         end, { desc = 'Jump to previous git [c]hange' })
 
-        map('v', '<leader>hs', function()
-          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'git [s]tage hunk' })
+        map('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk' })
 
-        map('v', '<leader>hr', function()
-          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'git [r]eset hunk' })
+        map('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [r]eset hunk' })
 
         map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
@@ -116,9 +115,7 @@ return {
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
         map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
-        map('n', '<leader>hD', function()
-          gitsigns.diffthis '@'
-        end, { desc = 'git [D]iff against last commit' })
+        map('n', '<leader>hD', function() gitsigns.diffthis '@' end, { desc = 'git [D]iff against last commit' })
 
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
         map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })

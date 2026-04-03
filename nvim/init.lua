@@ -614,6 +614,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         rescriptls = {},
         ts_ls = {},
+        tailwindcss = {},
 
         graphql = {
           filetypes = { 'graphql', 'gql', 'typescriptreact', 'javascriptreact', 'typescript', 'javascript' },

@@ -214,6 +214,9 @@ hi('@lsp.type.struct', { fg = c.type })
 hi('@lsp.type.type', { fg = c.type })
 hi('@lsp.type.variable', { fg = c.variable })
 
+-- LSP inlay hints
+hi('LspInlayHint', { fg = c.comment, bg = c.bg_highlight, italic = true })
+
 -- Git signs
 hi('GitSignsAdd', { fg = c.added })
 hi('GitSignsChange', { fg = c.changed })

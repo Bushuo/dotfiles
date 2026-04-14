@@ -167,6 +167,29 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Brace-based code folding — folds content inside {…}, keeps signatures visible
+-- (za to toggle, zc to close, zo to open, zM/zR close/open all)
+function _G.BraceFoldExpr()
+  local line = vim.fn.getline(vim.v.lnum)
+  local opens = line:match('{%s*$') or line:match('{%s*//')
+  local closes = line:match('^%s*}')
+  if opens and closes then
+    return '='  -- } else { or } catch { — net zero
+  elseif opens then
+    return 'a1'
+  elseif closes then
+    return 's1'
+  end
+  return '='
+end
+
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.BraceFoldExpr()'
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldtext = ''
+vim.o.fillchars = 'fold: '
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -593,6 +616,7 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client:supports_method('textDocument/inlayHint', event.buf) then
+            vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
             map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
           end
         end,
@@ -613,12 +637,47 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         rescriptls = {},
-        ts_ls = {},
-        tailwindcss = {},
+        ts_ls = {
+          settings = {
+            ['js/ts'] = {
+              tsserver = {
+                maxMemory = 16384,
+              },
+            },
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+          },
+        },
 
         graphql = {
           filetypes = { 'graphql', 'gql', 'typescriptreact', 'javascriptreact', 'typescript', 'javascript' },
+          on_attach = function(client)
+            client.server_capabilities.definitionProvider = false
+          end,
         },
+        tailwindcss = {},
 
         stylua = {}, -- Used to format Lua code
 
@@ -769,7 +828,9 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'enter',
+        ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -919,7 +980,7 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
@@ -955,6 +1016,13 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
+})
+
+-- Auto-save session on quit
+vim.api.nvim_create_autocmd('VimLeavePre', {
+  callback = function()
+    vim.cmd('mksession! /tmp/session.vim')
+  end,
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`

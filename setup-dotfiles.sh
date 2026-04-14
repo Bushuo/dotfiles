@@ -27,5 +27,6 @@ link_config() {
 
 link_config "$DOTFILES_ROOT/nvim" "$HOME/.config/nvim"
 link_config "$DOTFILES_ROOT/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+link_config "$DOTFILES_ROOT/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
 exit "$EXIT_CODE"

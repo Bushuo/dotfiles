@@ -10,6 +10,11 @@ fi
 DOTFILES_ROOT="$(cd "$(dirname "$0")" && pwd)"
 EXIT_CODE=0
 
+# Faster macOS key repeat for terminal apps like Neovim.
+# Smaller numbers mean faster repeat / shorter delay.
+MACOS_KEY_REPEAT=2
+MACOS_INITIAL_KEY_REPEAT=15
+
 link_config() {
   local source="$1"
   local target="$2"
@@ -28,5 +33,11 @@ link_config() {
 link_config "$DOTFILES_ROOT/nvim" "$HOME/.config/nvim"
 link_config "$DOTFILES_ROOT/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
 link_config "$DOTFILES_ROOT/tmux/.tmux.conf" "$HOME/.tmux.conf"
+
+defaults write -g KeyRepeat -int "$MACOS_KEY_REPEAT"
+defaults write -g InitialKeyRepeat -int "$MACOS_INITIAL_KEY_REPEAT"
+echo "Configured macOS key repeat: KeyRepeat=$MACOS_KEY_REPEAT InitialKeyRepeat=$MACOS_INITIAL_KEY_REPEAT"
+
+echo "You may need to log out and back in for key repeat changes to fully apply."
 
 exit "$EXIT_CODE"

@@ -34,6 +34,10 @@ link_config "$DOTFILES_ROOT/nvim" "$HOME/.config/nvim"
 link_config "$DOTFILES_ROOT/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
 link_config "$DOTFILES_ROOT/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
+if ! "$DOTFILES_ROOT/tmux/setup-tpm.sh"; then
+  EXIT_CODE=1
+fi
+
 defaults write -g KeyRepeat -int "$MACOS_KEY_REPEAT"
 defaults write -g InitialKeyRepeat -int "$MACOS_INITIAL_KEY_REPEAT"
 echo "Configured macOS key repeat: KeyRepeat=$MACOS_KEY_REPEAT InitialKeyRepeat=$MACOS_INITIAL_KEY_REPEAT"
